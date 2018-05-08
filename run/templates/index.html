@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Control Page</title>
+    <script src="{{ url_for('static', filename='jQuery/jquery-1.6.4.min.js') }}"></script>
+    <link href="{{ url_for('static', filename='css/css.css') }}" rel="stylesheet"></link>
+    <script>
+        /* **************************** get data from db to refresh web ******************** */
+
+        $(document).ready(function () {
+
+            function refreshContainer(html_id, values) {
+                document.getElementById(html_id).innerHTML = values;
+            }
+
+            var refresh_data_in_web = function(){
+                $.post("/get_data", {"get_data": "get the newest data from db."}, function (data, status) {
+
+                    refreshContainer("motor_A_status", data.motor_A_status);
+                    refreshContainer("motor_B_status", data.motor_B_status);
+                    refreshContainer("motor_C_status", data.motor_C_status);
+                    refreshContainer("motor_D_status", data.motor_D_status);
+
+                    refreshContainer("get_distance_A", data.ultra_A_dist);
+                    refreshContainer("get_distance_B", data.ultra_B_dist);
+                    refreshContainer("get_distance_C", data.ultra_C_dist);
+                    refreshContainer("get_distance_D", data.ultra_D_dist);
+
+                    refreshContainer("display_setting_A_distance", data.setting_A_dist);
+                    refreshContainer("display_setting_B_distance", data.setting_B_dist);
+                    refreshContainer("display_setting_C_distance", data.setting_C_dist);
+                    refreshContainer("display_setting_D_distance", data.setting_D_dist);
+                });
+            };
+
+            window.setInterval(refresh_data_in_web, 1000);
+
+        });
+
+
+
+        /* *************************** send and modify the data in db ********************* */
+
+
+
+        // motor
+        $(document).ready(function() {
+
+            var user_click_motor = function (html_class, flask_url, motor_command) {
+
+                $(html_class).click(function () {
+                    $.ajax({
+                        url: flask_url, data:{"motor_order": motor_command}, success: function (data) {
+                            alert(data);
+                        }
+                    });
+                });
+            };
+            
+            var user_click_ok = function (html_button_id, html_text_id, flask_url) {
+
+                $(html_button_id).click(function () {
+                    var html_text = $(html_text_id).val();
+
+                    $.ajax({
+                        url: flask_url, data: {"setting_distance": html_text}, success: function (data) {
+                            alert(data)
+                        }
+                    })
+                })
+
+            };
+
+            user_click_motor(".start_A", "/motor_A", "start");
+            user_click_motor(".stop_A", "/motor_A", "stop");
+            user_click_motor(".auto_A", "/motor_A", "auto");
+
+            user_click_motor(".start_B", "/motor_B", "start");
+            user_click_motor(".stop_B", "/motor_B", "stop");
+            user_click_motor(".auto_B", "/motor_B", "auto");
+
+            user_click_motor(".start_C", "/motor_C", "start");
+            user_click_motor(".stop_C", "/motor_C", "stop");
+            user_click_motor(".auto_C", "/motor_C", "auto");
+
+            user_click_motor(".start_D", "/motor_D", "start");
+            user_click_motor(".stop_D", "/motor_D", "stop");
+            user_click_motor(".auto_D", "/motor_D", "auto");
+
+
+            user_click_ok("#send_A_distance", "#set_A_distance", "/ultrasound_A_setting" );
+            user_click_ok("#send_B_distance", "#set_B_distance", "/ultrasound_B_setting" );
+            user_click_ok("#send_C_distance", "#set_C_distance", "/ultrasound_C_setting" );
+            user_click_ok("#send_D_distance", "#set_D_distance", "/ultrasound_D_setting" );
+        });
+
+    </script>
+</head>
+
+<body>
+
+<!-- Four devices -->
+<div class="motor_ultrasound" id="motor_ultrasound_A">
+    <section class="motor_control">
+        <h4 class="motor_name">Motor-A</h4>
+        <div class="motor_control_button">
+            <p>Motor Control</p>
+            <input class="start_A" type="button" value="start">
+            <input class="stop_A" type="button" value="stop">
+            <input class="auto_A" type="button" value="auto">
+        </div>
+        <div class="motor_status">
+            <h4>Status:</h4>
+            <p class="motor_A_status" id="motor_A_status">Stop</p>
+        </div>
+    </section>
+
+    <section class="ultrasound_real_time">
+        <h4 id="ultrasound_A">Ultrasound-A</h4>
+        <p>Real Distance(cm):</p>
+        <p id="get_distance_A">0.0</p>
+    </section>
+
+    <section class="setting_distance">
+        <div>
+            <form action="/ultrasound_A_setting" method="post">
+                Set A Distance: <input type="number" name="SetADistance" value="" id="set_A_distance">
+            </form>
+            <button id="send_A_distance">OK</button>
+        </div>
+        <div>
+            <p>Setting Distance(cm):</p>
+            <p id="display_setting_A_distance">0.0</p>
+        </div>
+    </section>
+
+</div>
+
+<!--------------------------------------------------------------------------------------->
+<div class="motor_ultrasound" id="motor_ultrasound_B">
+    <section class="motor_control">
+        <h4 class="motor_name">Motor-B</h4>
+        <div class="motor_control_button">
+            <p>Motor Control</p>
+            <input class="start_B" type="button" value="start">
+            <input class="stop_B" type="button" value="stop">
+            <input class="auto_B" type="button" value="auto">
+        </div>
+        <div class="motor_status">
+            <h4>Status:</h4>
+            <p class="motor_B_status" id="motor_B_status">Stop</p>
+        </div>
+    </section>
+
+    <section class="ultrasound_real_time">
+        <h4 id="ultrasound_B">Ultrasound-B</h4>
+        <p>Real Distance(cm):</p>
+        <p id="get_distance_B">0.0</p>
+    </section>
+
+    <section class="setting_distance">
+        <div>
+            <form action="/ultrasound_B_setting" method="post">
+                Set B Distance: <input type="number" name="SetBDistance" value="" id="set_B_distance">
+            </form>
+            <button id="send_B_distance">OK</button>
+        </div>
+        <div>
+            <p>Setting Distance(cm):</p>
+            <p id="display_setting_B_distance">0.0</p>
+        </div>
+    </section>
+
+</div>
+
+<!--------------------------------------------------------------------------------------->
+<div class="motor_ultrasound" id="motor_ultrasound_C">
+    <section class="motor_control">
+        <h4 class="motor_name">Motor-C</h4>
+        <div class="motor_control_button">
+            <p>Motor Control</p>
+            <input class="start_C" type="button" value="start">
+            <input class="stop_C" type="button" value="stop">
+            <input class="auto_C" type="button" value="auto">
+        </div>
+        <div class="motor_status">
+            <h4>Status:</h4>
+            <p class="motor_C_status" id="motor_C_status">Stop</p>
+        </div>
+    </section>
+
+    <section class="ultrasound_real_time">
+        <h4 id="ultrasound_C">Ultrasound-C</h4>
+        <p>Real Distance(cm):</p>
+        <p id="get_distance_C">0.0</p>
+    </section>
+
+    <section class="setting_distance">
+        <div>
+            <form action="/ultrasound_C_setting" method="post">
+                Set C Distance: <input type="number" name="SetCDistance" value="" id="set_C_distance">
+            </form>
+            <button id="send_C_distance">OK</button>
+        </div>
+        <div>
+            <p>Setting Distance(cm):</p>
+            <p id="display_setting_C_distance">0.0</p>
+        </div>
+    </section>
+</div>
+
+<!--------------------------------------------------------------------------------------->
+<div class="motor_ultrasound" id="motor_ultrasound_D">
+    <section class="motor_control">
+        <h4 class="motor_name">Motor-D</h4>
+        <div class="motor_control_button">
+            <p>Motor Control</p>
+            <input class="start_D" type="button" value="start">
+            <input class="stop_D" type="button" value="stop">
+            <input class="auto_D" type="button" value="auto">
+        </div>
+        <div class="motor_status">
+            <h4>Status:</h4>
+            <p class="motor_D_status" id="motor_D_status">Stop</p>
+        </div>
+    </section>
+
+    <section class="ultrasound_real_time">
+        <h4 id="ultrasound_D">Ultrasound-D</h4>
+        <p>Real Distance(cm):</p>
+        <p id="get_distance_D">0.0</p>
+    </section>
+
+    <section class="setting_distance">
+        <div>
+            <form action="/ultrasound_D_setting" method="post">
+                Set D Distance: <input type="number" name="SetDDistance" value="" id="set_D_distance">
+            </form>
+        <button id="send_D_distance">OK</button>
+        </div>
+        <div>
+            <p>Setting Distance(cm):</p>
+            <p id="display_setting_D_distance">0.0</p>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>

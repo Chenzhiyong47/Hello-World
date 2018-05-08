@@ -1,0 +1,340 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Line Chart</title>
+	<script src="{{ url_for('static', filename='javascript/Chart.bundle.js') }}"></script>
+	<script src="{{ url_for('static', filename='javascript/utils.js') }}"></script>
+    <script src="{{ url_for('static', filename='jQuery/jquery-1.6.4.min.js') }}"></script>
+	<style>
+	canvas{
+		-moz-user-select: none;
+		-webkit-user-select: none;
+		-ms-user-select: none;
+	}
+	
+	#canvas_B{
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+
+    #canvas_C{
+		position: absolute;
+		left: 0;
+		top: 50%;
+	}
+
+	#canvas_D{
+		position: absolute;
+		right: 0;
+		top: 50%;
+	}
+
+
+	</style>
+</head>
+
+<body>
+	<div style="width:48%; height: 30%;">
+		<canvas id="canvas_A"></canvas>
+	</div>
+	<div style="width:48%; height: 30%;">
+		<canvas id="canvas_B"></canvas>
+	</div>
+	<div style="width:48%; height: 30%;">
+		<canvas id="canvas_C"></canvas>
+	</div>
+	<div style="width:48%; height: 30%;">
+		<canvas id="canvas_D"></canvas>
+	</div>
+	<br>
+	<br>
+
+
+	<script>
+	
+		// ultrasound_A
+		var config_A = {
+			type: 'line',
+			data: {//
+				labels: [],
+				datasets: [{
+					label: 'Ultrasound_A_Distance',
+					backgroundColor: window.chartColors.red,
+					borderColor: window.chartColors.red,
+					data: [
+						0 
+					],
+					fill: false,
+				}//
+				]
+			},
+			options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'The Real Distance of Ultrasound-A'
+				},
+				tooltips: {
+					mode: 'index',
+					intersect: false,
+				},
+				hover: {
+					mode: 'nearest',
+					intersect: true
+				},
+				scales: {
+					xAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Time/ hour:min'
+						}
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Distance/cm'
+						}
+					}]
+				}
+			}
+		};
+		// ultrasound_B
+		var config_B = {
+			type: 'line',
+			data: {//
+				labels: [],
+				datasets: [{
+					label: 'Ultrasound_B_Distance',
+					backgroundColor: window.chartColors.purple,
+					borderColor: window.chartColors.purple,
+					data: [
+						0 
+					],
+					fill: false,
+				}//
+				]
+			},
+			options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'The Real Distance of Ultrasound-B'
+				},
+				tooltips: {
+					mode: 'index',
+					intersect: false,
+				},
+				hover: {
+					mode: 'nearest',
+					intersect: true
+				},
+				scales: {
+					xAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Time/ hour:min'
+						}
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Distance/cm'
+						}
+					}]
+				}
+			}
+		};
+		// ultrasound_C
+		var config_C = {
+			type: 'line',
+			data: {//
+				labels: [],
+				datasets: [{
+					label: 'Ultrasound_C_Distance',
+					backgroundColor: window.chartColors.blue,
+					borderColor: window.chartColors.blue,
+					data: [
+						0 
+					],
+					fill: false,
+				}//
+				]
+			},
+			options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'The Real Distance of Ultrasound-C'
+				},
+				tooltips: {
+					mode: 'index',
+					intersect: false,
+				},
+				hover: {
+					mode: 'nearest',
+					intersect: true
+				},
+				scales: {
+					xAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Time/ hour:min'
+						}
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Distance/cm'
+						}
+					}]
+				}
+			}
+		};
+		// ultrasound_D
+		var config_D = {
+			type: 'line',
+			data: {//
+				labels: [],
+				datasets: [{
+					label: 'Ultrasound_D_Distance',
+					backgroundColor: window.chartColors.orange,
+					borderColor: window.chartColors.orange,
+					data: [
+						0 
+					],
+					fill: false,
+				}//
+				]
+			},
+			options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'The Real Distance of Ultrasound-D'
+				},
+				tooltips: {
+					mode: 'index',
+					intersect: false,
+				},
+				hover: {
+					mode: 'nearest',
+					intersect: true
+				},
+				scales: {
+					xAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Time/ hour:min'
+						}
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Distance/cm'
+						}
+					}]
+				}
+			}
+		};
+		
+            
+
+		window.onload = function() {
+			var ctx_A = document.getElementById('canvas_A').getContext('2d');
+			var ctx_B = document.getElementById('canvas_B').getContext('2d');
+			var ctx_C = document.getElementById('canvas_C').getContext('2d');
+			var ctx_D = document.getElementById('canvas_D').getContext('2d');
+			
+			window.myLine_A = new Chart(ctx_A, config_A);
+			window.myLine_B = new Chart(ctx_B, config_B);
+			window.myLine_C = new Chart(ctx_C, config_C);
+			window.myLine_D = new Chart(ctx_D, config_D);
+		};
+
+
+
+		
+		// refresh data in figure. each three seconds.
+		$(document).ready(function() {
+		
+			function add_data() {
+
+				$.post("/get_time_distance", {"get_time_distance": "get time and distance from db"}, function (data, status) {
+	                // *Wed, 25 Apr 2018 13:47:47 GMT
+	                // *data.time_A.substring(0, 16)  is:   Wed, 25 Apr 2018
+	                // *data.time_A.substring(17, 19) is:   13
+	                // *data.time_A.substring(20, 25) is:   47:47
+	                // A
+					if (config_A.data.datasets.length > 0) {
+						// add time_label from db
+						config_A.data.labels.push(data.time_A.substring(20, 25));
+
+						config_A.data.datasets.forEach(function(dataset) {
+							// add data from db
+							dataset.data.push(data.distance_A);
+							// dataset.data.push(randomScalingFactor());
+						});
+
+						window.myLine_A.update();
+					}
+					// B
+					if (config_B.data.datasets.length > 0) {
+						// add time_label from db
+						config_B.data.labels.push(data.time_B.substring(20, 25));
+
+						config_B.data.datasets.forEach(function(dataset) {
+							// add data from db
+							dataset.data.push(data.distance_B);
+							// dataset.data.push(randomScalingFactor());
+						});
+
+						window.myLine_B.update();
+					}
+					// C
+					if (config_C.data.datasets.length > 0) {
+						// add time_label from db
+						config_C.data.labels.push(data.time_C.substring(20, 25));
+
+						config_C.data.datasets.forEach(function(dataset) {
+							// add data from db
+							dataset.data.push(data.distance_C);
+							// dataset.data.push(randomScalingFactor());
+						});
+
+						window.myLine_C.update();
+					}
+					// D
+					if (config_D.data.datasets.length > 0) {
+						// add time_label from db
+						config_D.data.labels.push(data.time_D.substring(20, 25));
+
+						config_D.data.datasets.forEach(function(dataset) {
+							// add data from db
+							dataset.data.push(data.distance_D);
+							// dataset.data.push(randomScalingFactor());
+						});
+
+						window.myLine_D.update();
+					}
+					
+	            });
+			}
+			
+			window.setInterval(add_data, 3000);
+			
+		})
+
+	</script>
+</body>
+
+</html>
