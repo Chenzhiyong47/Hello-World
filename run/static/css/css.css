@@ -17,25 +17,103 @@ body {
     float: left;
 }
 
-section {
-    border: solid 1px yellowgreen;
-}
-
-
 
 .motor_control .motor_control_button{
     float: left;
 }
 
 div .motor_name {
-    color: aqua;
+    color: black;
     font-family: Arial Consolas;
 }
 
-
-
-.setting_distance div {
+.setting_distance div{
     float: left;
+}
+
+.motor_name {
+    left: 40%;
+}
+
+.motor_control_button {
+    width: 49%;
+    text-align: center;
+    font-weight: bold;
+    margin-top: -2%;
+
+}
+
+.start_A, .start_B, .start_C, .start_D {
+    background-color: green;
+}
+.stop_A, .stop_B, .stop_C, .stop_D {
+    background-color: red;
+}
+.auto_A, .auto_B, .auto_C, .auto_D {
+    background-color: yellow;
+}
+
+div section .motor_status p {
+    font-family: bold Arial Consolas;
+    font-size: 1.5em;
+    color: blue;
+    margin-top: -2%;
+}
+
+.ultrasound_real_time p {
+    margin-top: -2%;
+}
+
+.ultrasound_real_time {
+    height: 30%;
+}
+
+#get_distance_A, #get_distance_B,
+#get_distance_C, #get_distance_D {
+    font-family: Arial Consolas;
+    font-size: 1.8em;
+    color: purple;
+    padding-bottom: -2%;
+}
+
+
+.setting_distance {
+    text-align: center;
+}
+
+.setting_distance form {
+    width: 50%;
+    font-family: Arial;
+    font-size: 1.2em;
+    margin-top: 10%;
+    padding-bottom: 2%;
+}
+
+.setting_distance input {
+    width: 50%;
+    height: 20%;
+}
+
+button {
+    margin-left: -50%;
+    width: 20%;
+    height: 20%;
+    font-family: Arial Consolas;
+    font-weight: bold;
+    border: solid 2px yellow;
+}
+
+#display_setting_A_distance, #display_setting_B_distance,
+#display_setting_C_distance, #display_setting_D_distance {
+    font-family: Arial, Consolas;
+    font-size: 1.5em;
+    color: purple;
+}
+
+#set_A_distance p, #set_B_distance p,
+#set_C_distance p, #set_D_distance p {
+    font-size: 1.2em;
+    margin-top: 2%;
 }
 
 

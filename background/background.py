@@ -73,6 +73,19 @@ def get_setting_distance_from_db(which_ultrasound):
         setting_distance = i[2]
 
     return setting_distance
+    
+# get the setting distance of each ultrasound
+def get_inited_distance_from_db(which_ultrasound):
+
+    inited_distance = None
+    commands = "Select * From {which_ultra} Where ID=1;".format(
+                which_ultra=which_ultrasound)
+    data = database.get_data_by_commands(commands)
+
+    for i in data:
+        inited_distance = i[2]
+
+    return inited_distance
 
 
 # get the newest distance of each ultrasound
@@ -103,12 +116,20 @@ def insert_real_distance_to_db(which_ultrasound, Time=None, Distance=None):
     database.insert_data_by_commands(commands)
 
 
+inited_A_distance = get_inited_distance_from_db(ultrasound_A)
+inited_B_distance = get_inited_distance_from_db(ultrasound_B)
+inited_C_distance = get_inited_distance_from_db(ultrasound_C)
+inited_D_distance = get_inited_distance_from_db(ultrasound_D)
+
+
 class cascading:
     def __init__(self):
+        # get A, B, C, Ds' setting distance
         pass
+        
 
     def cascading_A(self):
-        insert_real_distance_to_db(ultrasound_A, get_real_time(), ULTRASOUND.get_A_distance())
+        insert_real_distance_to_db(ultrasound_A, get_real_time(), inited_A_distance - ULTRASOUND.get_A_distance())
         time.sleep(0.6)
         motor_status, motor_command = get_motor_status_and_command_from_db(motor_B)
 
@@ -124,20 +145,20 @@ class cascading:
 
         elif motor_command == 'auto':
 
-            if get_newest_distance_from_db(ultrasound_A) > get_setting_distance_from_db(ultrasound_A):
+            if get_newest_distance_from_db(ultrasound_A) < get_setting_distance_from_db(ultrasound_A):
                 print("B_start")
                 update_motor_status_in_db(motor_B, 'start')
                 hardware.motor_B.start()
                 time.sleep(0.1)
 
-            elif get_newest_distance_from_db(ultrasound_A) < get_setting_distance_from_db(ultrasound_A):
+            elif get_newest_distance_from_db(ultrasound_A) > get_setting_distance_from_db(ultrasound_A):
                 print("B_stop")
                 update_motor_status_in_db(motor_B, 'stop')
                 hardware.motor_B.stop()
                 time.sleep(0.1)
 
     def cascading_B(self):
-        insert_real_distance_to_db(ultrasound_B, get_real_time(), ULTRASOUND.get_B_distance())
+        insert_real_distance_to_db(ultrasound_B, get_real_time(), inited_B_distance - ULTRASOUND.get_B_distance())
         time.sleep(0.6)
         motor_status, motor_command = get_motor_status_and_command_from_db(motor_C)
 
@@ -153,20 +174,20 @@ class cascading:
 
         elif motor_command == 'auto':
 
-            if get_newest_distance_from_db(ultrasound_B) > get_setting_distance_from_db(ultrasound_B):
+            if get_newest_distance_from_db(ultrasound_B) < get_setting_distance_from_db(ultrasound_B):
                 print("C_start")
                 update_motor_status_in_db(motor_C, 'start')
                 hardware.motor_C.start()
                 time.sleep(0.1)
 
-            elif get_newest_distance_from_db(ultrasound_B) < get_setting_distance_from_db(ultrasound_B):
+            elif get_newest_distance_from_db(ultrasound_B) > get_setting_distance_from_db(ultrasound_B):
                 print("C_stop")
                 update_motor_status_in_db(motor_C, 'stop')
                 hardware.motor_C.stop()
                 time.sleep(0.1)
 
     def cascading_C(self):
-        insert_real_distance_to_db(ultrasound_C, get_real_time(), ULTRASOUND.get_C_distance())
+        insert_real_distance_to_db(ultrasound_C, get_real_time(), inited_C_distance - ULTRASOUND.get_C_distance())
         time.sleep(0.6)
         motor_status, motor_command = get_motor_status_and_command_from_db(motor_D)
 
@@ -182,25 +203,25 @@ class cascading:
 
         elif motor_command == 'auto':
 
-            if get_newest_distance_from_db(ultrasound_C) > get_setting_distance_from_db(ultrasound_C):
+            if get_newest_distance_from_db(ultrasound_C) < get_setting_distance_from_db(ultrasound_C):
                 print("D_start")
                 update_motor_status_in_db(motor_D, 'start')
                 hardware.motor_D.start()
                 time.sleep(0.1)
 
-            elif get_newest_distance_from_db(ultrasound_C) < get_setting_distance_from_db(ultrasound_C):
+            elif get_newest_distance_from_db(ultrasound_C) > get_setting_distance_from_db(ultrasound_C):
                 print("D_stop")
                 update_motor_status_in_db(motor_D, 'stop')
                 hardware.motor_D.stop()
                 time.sleep(0.1)
 
     def cascading_D(self):
-        insert_real_distance_to_db(ultrasound_D, get_real_time(), ULTRASOUND.get_D_distance())
+        insert_real_distance_to_db(ultrasound_D, get_real_time(), inited_C_distance - ULTRASOUND.get_D_distance())
 
-        if get_newest_distance_from_db(ultrasound_D) > get_setting_distance_from_db(ultrasound_D):
+        if get_newest_distance_from_db(ultrasound_D) < get_setting_distance_from_db(ultrasound_D):
             print("water is little")
 
-        elif get_newest_distance_from_db(ultrasound_D) < get_setting_distance_from_db(ultrasound_D):
+        elif get_newest_distance_from_db(ultrasound_D) > get_setting_distance_from_db(ultrasound_D):
             print("water is enough")
 
 cascading = cascading()
