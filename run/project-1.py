@@ -29,13 +29,10 @@ DATABASE = database.operate_database()
 
 @app.route('/get_data', methods=['GET', 'POST'])
 def get_data():
-    print("get data     post")
     Get_Data = {}
 
     if request.method == 'POST':
         the_data = request.form['get_data']
-        print(the_data)
-        print('getting data from db now')
 
         motor_A_status, motor_A_command = DATABASE.get_motor_status_and_command_from_db('A')
         motor_B_status, motor_B_command = DATABASE.get_motor_status_and_command_from_db('B')
@@ -69,20 +66,16 @@ def get_data():
             "setting_D_dist": setting_D_dist
             }
 
-        print(Get_Data)
 
     return jsonify(Get_Data)
 
 
 @app.route('/get_time_distance', methods=['GET', 'POST'])
 def get_time_distance():
-    print("get_time_distance    post")
     Get_Time_Distance = {}
 
     if request.method == 'POST':
         the_data = request.form["get_time_distance"]
-        print(the_data)
-        print('getting data from db now')
 
         time_A, distance_A = DATABASE.get_newest_time_and_dist_from_db("ultrasound_A")
         time_B, distance_B = DATABASE.get_newest_time_and_dist_from_db("ultrasound_B")
@@ -125,7 +118,7 @@ def MOTOR(motor):
 
     else:
         pass
-
+    print(motor_status)
     return motor_status
 
 
